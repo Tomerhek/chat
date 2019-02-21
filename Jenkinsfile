@@ -22,7 +22,6 @@ node {
 
     stage('Compile-Package'){
       rtMaven = tool name: 'M3', type: 'maven'
-      sh "${mvnHome}/bin/mvn package"
     }
 
     stage ('Install') {
