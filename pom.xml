@@ -34,6 +34,65 @@
                     </archive>
                 </configuration>
             </plugin>
+                 
+            
+            <plugin>
+                 <groupId>org.codehaus.mojo</groupId>
+                 <artifactId>ideauidesigner-maven-plugin</artifactId>
+                 <executions>
+                   <execution>
+                     <goals>
+                       <goal>javac2</goal>
+                     </goals>
+                   </execution>
+                 </executions>
+
+                 <configuration>
+                   <fork>true</fork>
+                   <debug>true</debug>
+                   <failOnError>true</failOnError>
+                 </configuration>
+               </plugin>
+
+               <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-dependency-plugin</artifactId>
+                 <executions>
+                   <execution>
+                     <id>copy-dependencies</id>
+                     <phase>package</phase>
+                     <goals>
+                       <goal>copy-dependencies</goal>
+                     </goals>
+                     <configuration>
+                       <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                       <overWriteReleases>false</overWriteReleases>
+                       <overWriteSnapshots>false</overWriteSnapshots>
+                       <overWriteIfNewer>true</overWriteIfNewer>
+                     </configuration>
+                   </execution>
+                 </executions>
+               </plugin>
+
+
+
+               <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-surefire-plugin</artifactId>
+                 <version>3.0.0-M3</version>
+                 <configuration>
+                   <useSystemClassLoader>false</useSystemClassLoader>
+                 </configuration>
+               </plugin>
+
+               <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-surefire-plugin</artifactId>
+                 <version>3.0.0-M3</version>
+                 <configuration>
+                   <useSystemClassLoader>false</useSystemClassLoader>
+                 </configuration>
+               </plugin>
 
         </plugins>
     </build>
