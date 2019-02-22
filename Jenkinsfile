@@ -25,3 +25,4 @@ node{
         server.publishBuildInfo buildInfo
     }
 }
+
