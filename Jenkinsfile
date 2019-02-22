@@ -1,38 +1,27 @@
-node {
-    def server
+node{
+    // Get Artifactory server instance, defined in the Artifactory Plugin administration page.
+    def server = Artifactory.server "artifactoryID"
+    // Create an Artifactory Maven instance.
+    def rtMaven = Artifactory.newMavenBuild()
     def buildInfo
-    def rtMaven
 
-    stage ('Clone') {
-        git url: 'https://github.com/Tomerhek/chat'
+    stage('SCM Checkout'){
+      git 'https://github.com/Tomerhek/chat'
     }
 
-    stage ('Artifactory configuration') {
-        // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
-        server = Artifactory.server 'artifactoryID'
-
-        rtMaven = Artifactory.newMavenBuild()
-        rtMaven.tool = "Maven-3.6.0" // Tool name from Jenkins configuration
-        rtMaven.deployer releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local', server: server
-        rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
-        rtMaven.deployer.deployArtifacts = false // Disable artifacts deployment during Maven run
-
-        buildInfo = Artifactory.newBuildInfo()
+    stage('Artifactory configuration') {
+        // Tool name from Jenkins configuration
+        rtMaven.tool = "M3"
+        // Set Artifactory repositories for dependencies resolution and artifacts deployment.
+        rtMaven.deployer releaseRepo:'libs-release-local', snapshotRepo:'libs-snapshot-local', server: server
+        rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: server
     }
 
-    stage('Compile-Package'){
-      rtMaven = tool name: 'M3', type: 'maven'
+    stage('Maven build') {
+        buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
     }
 
-    stage ('Install') {
-        rtMaven.run pom: 'pom.xml', goals: 'install', buildInfo: buildInfo
-    }
-
-    stage ('Deploy') {
-        rtMaven.deployer.deployArtifacts buildInfo
-    }
-
-    stage ('Publish build info') {
+    stage('Publish build info') {
         server.publishBuildInfo buildInfo
     }
 }

@@ -13,7 +13,7 @@ import java.util.Set;
  * @author www.codejava.net
  */
 public class ChatServer {
-    private int port;
+    public int port;
     private Set<String> userNames = new HashSet<>();
     private Set<UserThread> userThreads = new HashSet<>();
 
