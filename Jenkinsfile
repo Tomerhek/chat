@@ -6,7 +6,7 @@ node{
     def buildInfo
     
     stage('SCM Checkout'){
-      git 'https://github.com/Tomerhek/chat'
+      git branch: 'client', url: "https://github.com/Tomerhek/chat"
     }
     
     stage('Artifactory configuration') {
