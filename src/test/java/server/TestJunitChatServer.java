@@ -10,7 +10,7 @@ public class TestJunitChatServer {
 
         ChatServer nsg = new ChatServer(8989);
         int portNum = nsg.port;
-        assertEquals(8980, portNum);
+        assertEquals(8989, portNum);
 
     }
 }
